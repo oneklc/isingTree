@@ -1,0 +1,4 @@
+c This is a 1 node tree
+c Just to mess with shit
+p oneNodeTree 1 1
+0 0 -1
