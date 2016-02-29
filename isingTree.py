@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[1]:
+# In[26]:
 
 '''
 Created on Feb 25 2016
@@ -24,7 +24,8 @@ from scipy.sparse import csr_matrix
 import pdb
 
 
-# In[ ]:
+
+# In[35]:
 
 class IsingSpin():
 
@@ -235,14 +236,12 @@ class IsingSpin():
              leaf = leaf node id
              parentSpin = spin of parent
         '''
-        get_ipython().magic('pdb.settrace ()')
         nodeWeights = self.isingTree['nodeWeights']
         edgeWeights = self.isingTree['sparseEdgeWeights']
         leafWeight = nodeWeights[leaf]
 
         parentEdgeWeight = self.getEdgeWeight(leaf,parent)
-        if (parentEdgeWeight == 0):
-            logging.info("Leaf = parent? %s %s", leaf, parent)
+      
         #calculate both possibilites and pick the lower. 
         leafGroundNeg =  -1*leafWeight + -1*parentSpin*parentEdgeWeight
         leafGroundPos = leafWeight + parentSpin*parentEdgeWeight
@@ -256,14 +255,14 @@ class IsingSpin():
         
 
 
-# In[ ]:
+# In[36]:
 
 ##############################################
 ######  TESTS             ####################
 ##############################################
 
-import unittest
 
+import unittest
 
 class IslingSpinAlgoTests(unittest.TestCase):
 
@@ -345,7 +344,29 @@ class IslingSpinAlgoTests(unittest.TestCase):
         
 
 
-# In[ ]:
+# In[37]:
+
+from sys import argv
+import optparse
+
+def main():
+    parser = optparse.OptionParser()
+    parser.add_option('-i', '--input', 
+                  dest="input_filename", 
+                  default="resources/extra-hard-problem.txt",
+                  )
+
+    options, remainder = parser.parse_args()
+    
+    ising = IsingSpin()
+    summary = ising.parse( options.input_filename)
+    results = ising.analyzeGroundState()
+
+    print("results are %s, %s", results[0],results[1])
+
+
+
+# In[38]:
 
 logging.getLogger().setLevel(logging.INFO)
 tests = IslingSpinAlgoTests()
@@ -353,12 +374,6 @@ tests.test_Import()
 tests.test_Analysis()
 tests.test_Analysis2()
 tests.test_oneNodeTest()
-
-
-
-# In[ ]:
-
-
 
 
 # In[ ]:
